@@ -15,8 +15,6 @@ def load_todos(filepath: str) -> List[TodoItem]:
             data = json.load(f)
             return [TodoItem.model_validate(item) for item in data]
     except (json.JSONDecodeError, ValueError):
-        # In a real app we might want to log this or raise a specific error
-        # but for now we'll return an empty list or raise ValueError
         return []
 
 
