@@ -4,7 +4,9 @@ A simple and robust CLI-based TODO application for tracking personal tasks.
 
 ## Features
 - Create tasks with title, optional description, priority, and due dates.
-- List all your current tasks with their status.
+- List all your current tasks with their status. Filter by status or priority, and sort by priority or due date.
+- Search tasks by keyword.
+- Edit existing tasks.
 - Mark tasks as completed.
 - Delete obsolete tasks.
 - Data securely stored locally in JSON format.
@@ -27,6 +29,15 @@ uv run todo add "Buy groceries" --priority high
 
 # List all tasks
 uv run todo list
+
+# Filter and sort tasks
+uv run todo list --status pending --sort-by priority
+
+# Search tasks by keyword
+uv run todo search "groceries"
+
+# Edit a task
+uv run todo edit 1 --title "Buy groceries and milk" --priority medium
 
 # Mark task with ID 1 as complete
 uv run todo complete 1
