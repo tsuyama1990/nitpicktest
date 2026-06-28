@@ -12,6 +12,7 @@ from src.todo.storage import load_todos, save_todos
 app = typer.Typer(help="A simple CLI TODO application")
 console = Console()
 
+
 def get_storage_file() -> str:
     return os.environ.get("TODO_STORAGE_FILE", "todos.json")
 
