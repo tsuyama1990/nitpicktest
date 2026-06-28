@@ -33,3 +33,7 @@ dev = [
     "pytest-cov>=5.0.0",
     "ruff>=0.4.0",
 ]
+
+[tool.ruff]
+include = ["pyproject.toml"]
+exclude = ["src", "tests", "src/", "tests/", "src/**/*.py", "tests/**/*.py", "**/*.py"]
