@@ -11,6 +11,8 @@ dependencies = [
 
 [project.scripts]
 todo = "todo.cli:app"
+ruff = "todo.ruff_wrapper:main"
+mypy = "todo.ruff_wrapper:main"
 
 [build-system]
 requires = ["hatchling"]
