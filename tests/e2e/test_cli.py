@@ -58,3 +58,32 @@ def test_delete_not_found(mock_storage: str) -> None:
     result = runner.invoke(app, ["delete", "999"])
     assert result.exit_code == 1
     assert "Task with ID 999 not found" in result.output
+
+
+def test_search_cmd(mock_storage: str) -> None:
+    runner.invoke(app, ["add", "Apples and oranges"])
+    runner.invoke(app, ["add", "Bananas"])
+
+    result = runner.invoke(app, ["search", "apple"])
+    assert result.exit_code == 0
+    assert "Apples and oranges" in result.stdout
+    assert "Bananas" not in result.stdout
+
+
+def test_edit_cmd(mock_storage: str) -> None:
+    runner.invoke(app, ["add", "Test Task", "--priority", "low"])
+
+    result = runner.invoke(app, ["edit", "1", "--title", "Updated Task", "--priority", "high"])
+    assert result.exit_code == 0
+    assert "Updated task 1" in result.stdout
+
+    list_res = runner.invoke(app, ["list"])
+    assert "Updated Task" in list_res.stdout
+    assert "[high]" in list_res.stdout
+    assert "Test Task" not in list_res.stdout
+
+
+def test_edit_cmd_not_found(mock_storage: str) -> None:
+    result = runner.invoke(app, ["edit", "999", "--title", "New Title"])
+    assert result.exit_code == 1
+    assert "Task with ID 999 not found" in result.output

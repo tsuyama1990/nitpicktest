@@ -1,3 +1,4 @@
+from typing import Optional
 from enum import Enum
 from datetime import datetime
 from pydantic import BaseModel, Field, ConfigDict
@@ -23,3 +24,10 @@ class TodoItem(BaseModel):
     priority: Priority = Priority.MEDIUM
     status: Status = Status.PENDING
     due_date: datetime | None = None
+
+
+class TodoUpdate(BaseModel):
+    title: Optional[str] = None
+    description: Optional[str] = None
+    priority: Optional[Priority] = None
+    due_date: Optional[datetime] = None
