@@ -1,1 +1,25 @@
-All tests passed!
+============================= test session starts ==============================
+platform linux -- Python 3.12.13, pytest-9.1.1, pluggy-1.6.0
+rootdir: /app
+configfile: pyproject.toml
+plugins: mock-3.15.1, cov-7.1.0
+collected 17 items
+
+tests/e2e/test_cli.py ......                                             [ 35%]
+tests/test_uat_cycle01.py ....                                           [ 58%]
+tests/unit/test_domain_models.py ....                                    [ 82%]
+tests/unit/test_storage.py ...                                           [100%]
+
+================================ tests coverage ================================
+_______________ coverage: platform linux, python 3.12.13-final-0 _______________
+
+Name                            Stmts   Miss  Cover   Missing
+-------------------------------------------------------------
+src/domain_models/__init__.py       3      0   100%
+src/domain_models/config.py         5      0   100%
+src/domain_models/todo.py          18      0   100%
+src/todo/cli.py                    52      1    98%   87
+src/todo/storage.py                19      0   100%
+-------------------------------------------------------------
+TOTAL                              97      1    99%
+============================== 17 passed in 1.33s ==============================

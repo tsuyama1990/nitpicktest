@@ -1,61 +1,46 @@
-# TODO Application
+# TODO CLI Application
 
-A simple and robust CLI-based TODO application for tracking personal tasks.
+A simple and robust Command-Line Interface (CLI) application for managing your TODO lists. This application stores your tasks locally in a JSON file and uses Pydantic for data validation.
 
 ## Features
-- Create tasks with title, optional description, priority, and due dates.
-- List all your current tasks with their status. Filter by status or priority, and sort by priority or due date.
-- Search tasks by keyword.
-- Edit existing tasks.
-- Mark tasks as completed.
-- Delete obsolete tasks.
-- Data securely stored locally in JSON format.
+- **Add Tasks:** Create a task with a title, description, priority, and due date.
+- **List Tasks:** View all your tasks, along with their status, priority, and details.
+- **Complete Tasks:** Mark tasks as done to track progress.
+- **Delete Tasks:** Remove unwanted or obsolete tasks from the list.
 
 ## Installation
 
-Ensure you have `uv` installed, then synchronize the environment:
+This project uses `uv` for dependency management. To set up the environment and run the app, run the following:
 
 ```bash
 uv sync
 ```
 
 ## Usage
+The CLI uses Typer to provide clean, easy-to-use commands.
 
-You can use the `todo` command line interface to manage your tasks.
-
+### Adding a Task
 ```bash
-# Add a new task
-uv run todo add "Buy groceries" --priority high
+uv run todo add "Buy groceries" --priority high --desc "Milk, Eggs, Bread"
+```
 
-# List all tasks
+### Listing Tasks
+```bash
 uv run todo list
+```
 
-# Filter and sort tasks
-uv run todo list --status pending --sort-by priority
+### Marking a Task Complete
+```bash
+uv run todo complete <ID>
+```
 
-# Search tasks by keyword
-uv run todo search "groceries"
-
-# Edit a task
-uv run todo edit 1 --title "Buy groceries and milk" --priority medium
-
-# Mark task with ID 1 as complete
-uv run todo complete 1
-
-# Delete a task with ID 1
-uv run todo delete 1
+### Deleting a Task
+```bash
+uv run todo delete <ID>
 ```
 
 ## Code Structure
-
-```
-todo-app/
-├── src/
-│   ├── domain_models/   # Schemas for tasks (TodoItem, Priority, Status)
-│   └── todo/            # CLI interface and local JSON storage logic
-├── tests/
-│   ├── e2e/             # Tests CLI and user scenarios (UAT)
-│   └── unit/            # Tests core logic and data models
-├── pyproject.toml
-└── README.md
-```
+- `src/domain_models/`: Contains Pydantic data schemas enforcing structure for Todo items, Priority, and Status.
+- `src/todo/storage.py`: Handles local JSON read/write logic.
+- `src/todo/cli.py`: Typer command definitions.
+- `tests/`: Contains comprehensive unit, e2e, and User Acceptance Tests (UAT).

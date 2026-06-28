@@ -3,11 +3,9 @@ logs/
 .nitpick/worktrees/
 .coverage
 __pycache__/
-
-# Added dynamically
-__pycache__/
-*.py[cod]
-*$py.class
+*.pyc
+*.pyo
+*.pyd
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
@@ -19,4 +17,3 @@ __pycache__/
 venv/
 env/
 .DS_Store
-todos.json

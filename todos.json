@@ -1,0 +1,34 @@
+[
+  {
+    "id": 2,
+    "title": "Task A",
+    "description": null,
+    "priority": "medium",
+    "status": "pending",
+    "due_date": null
+  },
+  {
+    "id": 3,
+    "title": "Task B",
+    "description": null,
+    "priority": "medium",
+    "status": "pending",
+    "due_date": null
+  },
+  {
+    "id": 4,
+    "title": "My Task",
+    "description": null,
+    "priority": "medium",
+    "status": "pending",
+    "due_date": null
+  },
+  {
+    "id": 5,
+    "title": "My Task to Delete",
+    "description": null,
+    "priority": "medium",
+    "status": "pending",
+    "due_date": null
+  }
+]

@@ -23,13 +23,3 @@ class TodoItem(BaseModel):
     priority: Priority = Priority.MEDIUM
     status: Status = Status.PENDING
     due_date: datetime | None = None
-
-
-class TodoUpdate(BaseModel):
-    model_config = ConfigDict(extra="forbid")
-
-    title: str | None = Field(None, min_length=1)
-    description: str | None = None
-    priority: Priority | None = None
-    status: Status | None = None
-    due_date: datetime | None = None
