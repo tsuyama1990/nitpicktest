@@ -1,9 +1,9 @@
 from typer.testing import CliRunner
 import pytest
 from pytest_mock import MockerFixture
-from dev_src.todo.cli import app
-from dev_src.todo.storage import save_todos
-from dev_src.domain_models.todo import TodoItem, Priority, Status
+from src.todo.cli import app
+from src.todo.storage import save_todos
+from src.domain_models.todo import TodoItem, Priority, Status
 
 runner = CliRunner()
 
@@ -11,7 +11,7 @@ runner = CliRunner()
 @pytest.fixture
 def mock_storage(tmp_path: str, mocker: MockerFixture) -> str:
     test_file = f"{tmp_path}/test_todos.json"
-    mocker.patch("dev_src.todo.cli.settings.storage_file", test_file)
+    mocker.patch("src.todo.cli.settings.storage_file", test_file)
     return test_file
 
 
