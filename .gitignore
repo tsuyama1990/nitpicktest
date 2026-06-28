@@ -1,1 +1,5 @@
 .nitpick/
+logs/
+.nitpick/worktrees/
+.coverage
+__pycache__/
