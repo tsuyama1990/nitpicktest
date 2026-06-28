@@ -33,6 +33,3 @@ dev = [
     "pytest-cov>=5.0.0",
     "ruff>=0.4.0",
 ]
-
-[tool.ruff.lint]
-exclude = []
