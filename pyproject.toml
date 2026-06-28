@@ -35,5 +35,4 @@ dev = [
 ]
 
 [tool.ruff]
-include = ["pyproject.toml"]
-exclude = ["src", "tests", "src/", "tests/", "src/**/*.py", "tests/**/*.py", "**/*.py"]
+include = ["pyproject.toml", "src/**/*.py", "tests/**/*.py"]
