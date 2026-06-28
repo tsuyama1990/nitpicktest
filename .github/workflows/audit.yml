@@ -1,8 +1,5 @@
 name: Audit
-
-on:
-  pull_request:
-
+on: [push, pull_request]
 jobs:
   audit:
     runs-on: ubuntu-latest
@@ -10,5 +7,6 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: List repo structure
-        run: ls -R
+      - run: ls -la
+      - run: ls -la src/
+      - run: ruff check . || true
