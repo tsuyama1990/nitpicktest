@@ -1,165 +1,183 @@
+import os
 import typer
+from typing import Optional
 from datetime import datetime
-from typing import Optional, Any
+from src.domain_models import TodoItem, Priority, Status, TodoUpdate
+from src.todo.storage import (
+    load_todos,
+    save_todos,
+    search_todos,
+    filter_todos,
+    sort_todos,
+)
 
-from src.domain_models.todo import Priority, Status, TodoItem, TodoUpdate
-from src.domain_models.config import settings
-from src.todo.storage import load_todos, save_todos, filter_todos, search_todos, sort_todos
+app = typer.Typer()
 
-app = typer.Typer(help="TODO CLI Application")
+
+def get_db_path() -> str:
+    return os.environ.get("TODO_DB_PATH", "todos.json")
 
 
 @app.command()
 def add(
-    title: str = typer.Argument(..., help="The title of the task"),
-    description: Optional[str] = typer.Option(None, "--desc", "-d", help="Description of the task"),
-    priority: Priority = typer.Option(Priority.MEDIUM, "--priority", "-p", help="Task priority"),
-    due_date: Optional[datetime] = typer.Option(None, "--due", "-D", help="Due date (YYYY-MM-DD)"),
-) -> None:
-    """Add a new TODO item."""
-    todos = load_todos(settings.storage_file)
+    title: str,
+    description: Optional[str] = None,
+    priority: Priority = Priority.MEDIUM,
+    due_date: Optional[datetime] = None,
+):
+    db_path = get_db_path()
+    todos = load_todos(db_path)
 
-    new_id = 1 if not todos else max(t.id for t in todos) + 1
+    new_id = 1
+    if todos:
+        new_id = max(todo.id for todo in todos) + 1
 
     new_todo = TodoItem(
-        id=new_id, title=title, description=description, priority=priority, due_date=due_date
+        id=new_id,
+        title=title,
+        description=description,
+        priority=priority,
+        due_date=due_date,
     )
 
     todos.append(new_todo)
-    save_todos(settings.storage_file, todos)
-    typer.echo(f"Added task: '{title}' with ID {new_id} and priority {priority.value}")
+    save_todos(db_path, todos)
+    typer.echo(f"Added task: {title} (ID: {new_id})")
 
 
-@app.command(name="list")
-def list_todos(
-    status: Optional[Status] = typer.Option(None, "--status", "-s", help="Filter by status"),
-    priority: Optional[Priority] = typer.Option(
-        None, "--priority", "-p", help="Filter by priority"
-    ),
-    sort_by: Optional[str] = typer.Option(
-        None, "--sort-by", "-S", help="Sort by priority or due_date"
-    ),
-) -> None:
-    """List all TODO items."""
-    status_str = status.value if status else None
-    priority_str = priority.value if priority else None
-    todos = filter_todos(settings.storage_file, status=status_str, priority=priority_str)
+@app.command()
+def list(
+    status: Optional[Status] = None,
+    priority: Optional[Priority] = None,
+    sort_by: Optional[str] = None,
+):
+    db_path = get_db_path()
 
-    if sort_by:
-        todos = sort_todos(todos, sort_by)
+    # Apply filters
+    todos = filter_todos(
+        db_path,
+        status=status.value if status else None,
+        priority=priority.value if priority else None,
+    )
 
     if not todos:
         typer.echo("No tasks found.")
         return
 
+    # Apply sorting
+    if sort_by:
+        try:
+            todos = sort_todos(todos, sort_by)
+        except ValueError as e:
+            typer.echo(f"Error: {e}")
+            raise typer.Exit(code=1)
+
     for todo in todos:
-        desc = f" - {todo.description}" if todo.description else ""
-        due = f" (Due: {todo.due_date.strftime('%Y-%m-%d')})" if todo.due_date else ""
-        status_mark = "[x]" if todo.status == Status.COMPLETED else "[ ]"
-
-        typer.echo(f"{todo.id}: {status_mark} {todo.title} [{todo.priority.value}]{desc}{due}")
+        status_char = "✓" if todo.status == Status.COMPLETED else " "
+        typer.echo(f"[{status_char}] {todo.id}: {todo.title} ({todo.priority})")
 
 
 @app.command()
-def complete(item_id: int) -> None:
-    """Mark a TODO item as complete."""
-    todos = load_todos(settings.storage_file)
-
-    found = False
-    for todo in todos:
-        if todo.id == item_id:
-            todo.status = Status.COMPLETED
-            found = True
-            break
-
-    if found:
-        save_todos(settings.storage_file, todos)
-        typer.echo(f"Marked task {item_id} as completed.")
-    else:
-        typer.echo(f"Task with ID {item_id} not found.", err=True)
-        raise typer.Exit(code=1)
-
-
-@app.command()
-def delete(item_id: int) -> None:
-    """Delete a TODO item."""
-    todos = load_todos(settings.storage_file)
-
-    initial_length = len(todos)
-    todos = [t for t in todos if t.id != item_id]
-
-    if len(todos) < initial_length:
-        save_todos(settings.storage_file, todos)
-        typer.echo(f"Deleted task {item_id}.")
-    else:
-        typer.echo(f"Task with ID {item_id} not found.", err=True)
-        raise typer.Exit(code=1)
-
-
-@app.command()
-def search(keyword: str) -> None:
-    """Search TODO items by keyword."""
-    todos = search_todos(settings.storage_file, keyword)
+def search(keyword: str):
+    db_path = get_db_path()
+    todos = search_todos(db_path, keyword)
 
     if not todos:
         typer.echo(f"No tasks found matching '{keyword}'.")
         return
 
     for todo in todos:
-        desc = f" - {todo.description}" if todo.description else ""
-        due = f" (Due: {todo.due_date.strftime('%Y-%m-%d')})" if todo.due_date else ""
-        status_mark = "[x]" if todo.status == Status.COMPLETED else "[ ]"
-
-        typer.echo(f"{todo.id}: {status_mark} {todo.title} [{todo.priority.value}]{desc}{due}")
+        status_char = "✓" if todo.status == Status.COMPLETED else " "
+        typer.echo(f"[{status_char}] {todo.id}: {todo.title} ({todo.priority})")
 
 
 @app.command()
 def edit(
     item_id: int,
-    title: Optional[str] = typer.Option(None, "--title", "-t", help="New title"),
-    description: Optional[str] = typer.Option(None, "--desc", "-d", help="New description"),
-    priority: Optional[Priority] = typer.Option(None, "--priority", "-p", help="New priority"),
-    due_date: Optional[datetime] = typer.Option(None, "--due", "-D", help="New due date"),
-) -> None:
-    """Edit an existing TODO item."""
-    todos = load_todos(settings.storage_file)
+    title: Optional[str] = None,
+    description: Optional[str] = None,
+    priority: Optional[Priority] = None,
+    due_date: Optional[datetime] = None,
+):
+    db_path = get_db_path()
+    todos = load_todos(db_path)
 
-    found = False
-    for i, todo in enumerate(todos):
-        if todo.id == item_id:
-            found = True
-
-            # Avoid explicitly passing None to the model instantiation
-            update_kwargs: dict[str, Any] = {}
-            if title is not None:
-                update_kwargs["title"] = title
-            if description is not None:
-                update_kwargs["description"] = description
-            if priority is not None:
-                update_kwargs["priority"] = priority
-            if due_date is not None:
-                update_kwargs["due_date"] = due_date
-
-            if not update_kwargs:
-                typer.echo("No fields to update.")
-                return
-
-            update_model = TodoUpdate(**update_kwargs)
-            update_data = update_model.model_dump(exclude_unset=True)
-
-            current_data = todo.model_dump()
-            current_data.update(update_data)
-
-            todos[i] = TodoItem.model_validate(current_data)
-            break
-
-    if found:
-        save_todos(settings.storage_file, todos)
-        typer.echo(f"Updated task {item_id}.")
-    else:
-        typer.echo(f"Task with ID {item_id} not found.", err=True)
+    # Try to build update model to leverage Pydantic validation
+    try:
+        update_data = TodoUpdate(
+            title=title, description=description, priority=priority, due_date=due_date
+        )
+    except Exception as e:
+        typer.echo(f"Validation error: {e}")
         raise typer.Exit(code=1)
 
+    found_idx = -1
+    for i, todo in enumerate(todos):
+        if todo.id == item_id:
+            found_idx = i
+            break
 
-if __name__ == "__main__":
-    app()
+    if found_idx == -1:
+        typer.echo(f"Task {item_id} not found.")
+        return
+
+    # Get original item and updated fields (exclude unset prevents overriding with None)
+    old_item = todos[found_idx]
+    updates = update_data.model_dump(exclude_unset=True)
+
+    # To fully comply with Pydantic V2 partial updates logic specified:
+    # "use model_dump(exclude_unset=True) to extract explicitly provided fields"
+    # we need a way to filter out the defaults Typer gives us (which are None).
+    # Since Typer doesn't have an "unset" concept like Pydantic, we will map
+    # the explicitly not-None fields to an update dict and apply it.
+
+    # We can rely on `updates` if we only pass kwargs that are not None to TodoUpdate
+
+    update_kwargs: dict = {}
+    if title is not None:
+        update_kwargs["title"] = title
+    if description is not None:
+        update_kwargs["description"] = description
+    if priority is not None:
+        update_kwargs["priority"] = priority
+    if due_date is not None:
+        update_kwargs["due_date"] = due_date
+
+    update_model = TodoUpdate(**update_kwargs)
+    updates = update_model.model_dump(exclude_unset=True)
+
+    for key, value in updates.items():
+        setattr(old_item, key, value)
+
+    save_todos(db_path, todos)
+    typer.echo(f"Edited task {item_id}.")
+
+
+@app.command()
+def complete(item_id: int):
+    db_path = get_db_path()
+    todos = load_todos(db_path)
+
+    for todo in todos:
+        if todo.id == item_id:
+            todo.status = Status.COMPLETED
+            save_todos(db_path, todos)
+            typer.echo(f"Marked task {item_id} as completed.")
+            return
+
+    typer.echo(f"Task {item_id} not found.")
+
+
+@app.command()
+def delete(item_id: int):
+    db_path = get_db_path()
+    todos = load_todos(db_path)
+
+    initial_length = len(todos)
+    todos = [t for t in todos if t.id != item_id]
+
+    if len(todos) < initial_length:
+        save_todos(db_path, todos)
+        typer.echo(f"Deleted task {item_id}.")
+    else:
+        typer.echo(f"Task {item_id} not found.")

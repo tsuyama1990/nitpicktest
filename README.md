@@ -1,61 +1,61 @@
-# TODO CLI Application
+# TODO Application
 
-A simple and robust Command-Line Interface (CLI) application for managing your TODO lists. This application stores your tasks locally in a JSON file and uses Pydantic for data validation.
+A simple and robust CLI-based TODO application for tracking personal tasks.
 
 ## Features
-- **Add Tasks:** Create a task with a title, description, priority, and due date.
-- **List Tasks:** View all your tasks, along with their status, priority, and details. You can also **Filter** by status or priority, and **Sort** by due date or priority.
-- **Search Tasks:** Find specific tasks by keyword in the title or description.
-- **Edit Tasks:** Modify existing tasks without having to delete and recreate them.
-- **Complete Tasks:** Mark tasks as done to track progress.
-- **Delete Tasks:** Remove unwanted or obsolete tasks from the list.
+- Create tasks with title, optional description, priority, and due dates.
+- List all your current tasks with their status. Filter by status or priority, and sort by priority or due date.
+- Search tasks by keyword.
+- Edit existing tasks.
+- Mark tasks as completed.
+- Delete obsolete tasks.
+- Data securely stored locally in JSON format.
 
 ## Installation
 
-This project uses `uv` for dependency management. To set up the environment and run the app, run the following:
+Ensure you have `uv` installed, then synchronize the environment:
 
 ```bash
 uv sync
 ```
 
 ## Usage
-The CLI uses Typer to provide clean, easy-to-use commands.
 
-### Adding a Task
-```bash
-uv run todo add "Buy groceries" --priority high --desc "Milk, Eggs, Bread"
-```
+You can use the `todo` command line interface to manage your tasks.
 
-### Listing Tasks
-List all tasks, optionally filtering and sorting:
 ```bash
+# Add a new task
+uv run todo add "Buy groceries" --priority high
+
+# List all tasks
 uv run todo list
-uv run todo list --status completed
-uv run todo list --priority high --sort-by due_date
-```
 
-### Searching Tasks
-```bash
+# Filter and sort tasks
+uv run todo list --status pending --sort-by priority
+
+# Search tasks by keyword
 uv run todo search "groceries"
-```
 
-### Editing a Task
-```bash
-uv run todo edit <ID> --title "New Title" --priority low
-```
+# Edit a task
+uv run todo edit 1 --title "Buy groceries and milk" --priority medium
 
-### Marking a Task Complete
-```bash
-uv run todo complete <ID>
-```
+# Mark task with ID 1 as complete
+uv run todo complete 1
 
-### Deleting a Task
-```bash
-uv run todo delete <ID>
+# Delete a task with ID 1
+uv run todo delete 1
 ```
 
 ## Code Structure
-- `src/domain_models/`: Contains Pydantic data schemas enforcing structure for Todo items, Priority, and Status.
-- `src/todo/storage.py`: Handles local JSON read/write logic, including search and filter capabilities.
-- `src/todo/cli.py`: Typer command definitions.
-- `tests/`: Contains comprehensive unit, e2e, and User Acceptance Tests (UAT).
+
+```
+todo-app/
+├── src/
+│   ├── domain_models/   # Schemas for tasks (TodoItem, Priority, Status)
+│   └── todo/            # CLI interface and local JSON storage logic
+├── tests/
+│   ├── e2e/             # Tests CLI and user scenarios (UAT)
+│   └── unit/            # Tests core logic and data models
+├── pyproject.toml
+└── README.md
+```
