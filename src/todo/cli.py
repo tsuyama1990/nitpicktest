@@ -1,19 +1,20 @@
-import typer
-import os
 from typing import Optional, Any
 from datetime import datetime
+
+import typer
 from rich.console import Console
 from rich.table import Table
 
-from domain_models import TodoItem, Priority, Status
+from domain_models import TodoItem, TodoItemUpdate, Priority, Status
 from todo.storage import load_todos, save_todos, search_todos, filter_todos, sort_todos
+from todo.config import settings
 
 app = typer.Typer(help="CLI-based TODO application")
 console = Console()
 
 
 def get_db_path() -> str:
-    return os.environ.get("TODO_DB_PATH", "todos.json")
+    return settings.todo_db_path
 
 
 def _print_todos(todos: list[TodoItem]) -> None:
@@ -111,22 +112,26 @@ def edit(
 
     for idx, todo in enumerate(todos):
         if todo.id == item_id:
-            # Build a dictionary of explicitly provided updates
-            updates: dict[str, Any] = {}
+            # Gather explicit updates avoiding explicit Nones unless intended
+            provided: dict[str, Any] = {}
             if title is not None:
-                updates["title"] = title
+                provided["title"] = title
             if description is not None:
-                updates["description"] = description
+                provided["description"] = description
             if priority is not None:
-                updates["priority"] = priority
+                provided["priority"] = priority
             if due_date is not None:
-                updates["due_date"] = due_date
+                provided["due_date"] = due_date
 
-            if not updates:
+            if not provided:
                 console.print("No changes provided.", style="bold yellow")
                 return
 
-            # Create a new model instance by merging existing data and updates
+            # Create a new update model instance and dump using exclude_unset=True
+            update_model = TodoItemUpdate(**provided)
+            updates = update_model.model_dump(exclude_unset=True)
+
+            # Merge existing data and updates
             current_data = todo.model_dump()
             current_data.update(updates)
 
