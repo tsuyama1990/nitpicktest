@@ -3,7 +3,7 @@ import os
 from pathlib import Path
 from typing import Optional, List
 
-from src.domain_models.todo import TodoItem
+from dev_src.domain_models.todo import TodoItem
 
 
 def load_todos(filepath: str) -> List[TodoItem]:

@@ -1,7 +1,7 @@
 import pytest
 from pydantic import ValidationError
 from datetime import datetime
-from src.domain_models.todo import TodoItem, Priority, Status
+from dev_src.domain_models.todo import TodoItem, Priority, Status
 
 
 def test_todo_item_valid() -> None:

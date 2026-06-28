@@ -1,7 +1,7 @@
 from typer.testing import CliRunner
 import pytest
 from pytest_mock import MockerFixture
-from src.todo.cli import app
+from dev_src.todo.cli import app
 
 runner = CliRunner()
 
@@ -9,7 +9,7 @@ runner = CliRunner()
 @pytest.fixture
 def mock_storage(tmp_path: str, mocker: MockerFixture) -> str:
     test_file = f"{tmp_path}/test_todos.json"
-    mocker.patch("src.todo.cli.settings.storage_file", test_file)
+    mocker.patch("dev_src.todo.cli.settings.storage_file", test_file)
     return test_file
 
 
