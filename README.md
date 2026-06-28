@@ -59,4 +59,3 @@ todo-app/
 ├── pyproject.toml
 └── README.md
 ```
-dummy

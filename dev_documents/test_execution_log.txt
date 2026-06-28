@@ -1,1 +1,14 @@
-All tests passed!
+============================= test session starts ==============================
+platform linux -- Python 3.12.13, pytest-9.1.1, pluggy-1.6.0
+rootdir: /app
+configfile: pyproject.toml
+plugins: mock-3.15.1, cov-7.1.0
+collected 30 items
+
+tests/e2e/test_cli.py .......                                            [ 23%]
+tests/e2e/test_uat.py ....                                               [ 36%]
+tests/e2e/test_uat_cycle02.py .....                                      [ 53%]
+tests/unit/test_domain_models.py ........                                [ 80%]
+tests/unit/test_storage.py ......                                        [100%]
+
+============================== 30 passed in 0.36s ==============================
