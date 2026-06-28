@@ -30,8 +30,9 @@ This cycle enhances the existing TODO application by adding capabilities to filt
 - There are no external API calls in this cycle, so no API mocking is required. Ensure that JSON file storage uses relative or temporary paths during testing to prevent polluting the local environment.
 
 ## Implementation Notes
-1. Enhance the `src/todo/storage.py` logic to query and filter `TodoItem` lists based on given attributes without modifying the underlying domain models.
-2. In `src/todo/cli.py`, add the `search` and `edit` commands. The `edit` command should handle partial updates, fetching the existing task by ID, applying only the non-null changes provided, and saving back to storage.
+1. Enhance the `src/todo/storage.py` logic to query and filter `TodoItem` lists based on given attributes without modifying the underlying domain models in `src/domain_models/todo.py`.
+2. In `src/todo/cli.py`, add the `search` and `edit` commands.
+   - **CRITICAL:** For the `edit` command handling partial updates with Pydantic V2, you MUST use `model_dump(exclude_unset=True)` to extract explicitly provided fields. Avoid explicitly passing `None` during model instantiation for fields you want to remain unset, as they will override existing data with `None`.
 3. Update the existing `list` CLI command to accept optional parameters for filtering (`status`, `priority`) and sorting (`sort_by`).
 4. Ensure data validation is strictly applied on edit operations.
 

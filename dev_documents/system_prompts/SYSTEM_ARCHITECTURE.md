@@ -21,10 +21,13 @@ None.
 
 ## b. Shared Domain Models
 
+Schemas must be strictly placed in `src/domain_models/` and exported via `src/domain_models/__init__.py`.
+
 ```python
+# src/domain_models/todo.py
 from enum import Enum
 from datetime import datetime
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 
 class Priority(str, Enum):
     LOW = "low"
@@ -36,6 +39,8 @@ class Status(str, Enum):
     COMPLETED = "completed"
 
 class TodoItem(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+
     id: int
     title: str = Field(..., min_length=1)
     description: str | None = None
@@ -48,7 +53,7 @@ class TodoItem(BaseModel):
 
 | Cycle | Artifacts (Files/Classes) | Provided Interface | Dependent Cycle |
 |-------|------------------------|---------------------|-----------|
-| CYCLE01 | `src/todo/models.py`, `src/todo/storage.py`, `src/todo/cli.py` | Basic CRUD CLI commands (`add`, `list`, `complete`, `delete`), JSON storage access | - |
+| CYCLE01 | `src/domain_models/todo.py`, `src/todo/storage.py`, `src/todo/cli.py` | Basic CRUD CLI commands (`add`, `list`, `complete`, `delete`), JSON storage access | - |
 | CYCLE02 | `src/todo/cli.py`, `src/todo/storage.py` | Search, filter, edit commands, enhanced storage queries | CYCLE01 |
 
 ## d. Integration Test Master Plan
