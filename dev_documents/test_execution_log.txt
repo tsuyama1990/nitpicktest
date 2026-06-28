@@ -1,0 +1,24 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.13, pytest-9.1.1, pluggy-1.6.0
+rootdir: /app
+configfile: pyproject.toml
+testpaths: tests
+plugins: cov-7.1.0
+collected 15 items
+
+tests/e2e/test_uat_cycle02.py ......                                     [ 40%]
+tests/unit/test_models.py ....                                           [ 66%]
+tests/unit/test_storage.py .....                                         [100%]
+
+================================ tests coverage ================================
+_______________ coverage: platform linux, python 3.12.13-final-0 _______________
+
+Name                            Stmts   Miss  Cover
+---------------------------------------------------
+src/domain_models/__init__.py       2      0   100%
+src/domain_models/todo.py          18      0   100%
+src/todo/cli.py                    93     12    87%
+src/todo/storage.py                43      3    93%
+---------------------------------------------------
+TOTAL                             156     15    90%
+============================== 15 passed in 1.51s ==============================
