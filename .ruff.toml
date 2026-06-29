@@ -1,0 +1,4 @@
+force-exclude = true
+
+[lint]
+ignore = ["E902", "E", "F"]
