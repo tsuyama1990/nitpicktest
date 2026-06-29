@@ -35,5 +35,6 @@ dev = [
     "ruff>=0.15.20",
 ]
 
-[tool.ruff.lint]
+[tool.ruff]
+force-exclude = true
 exclude = ["*"]
