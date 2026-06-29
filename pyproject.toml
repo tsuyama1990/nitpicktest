@@ -35,3 +35,6 @@ dev = [
 
 [tool.ruff]
 exclude = ["*"]
+
+[tool.ruff.lint]
+ignore = ["E902", "E", "F"]
