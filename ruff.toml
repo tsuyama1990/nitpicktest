@@ -1,5 +1,0 @@
-force-exclude = true
-extend-exclude = ["*"]
-
-[lint]
-ignore = ["E902"]
