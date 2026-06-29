@@ -1,4 +1,3 @@
-from typing import Optional
 from enum import Enum
 from datetime import datetime
 from pydantic import BaseModel, Field, ConfigDict
@@ -27,7 +26,10 @@ class TodoItem(BaseModel):
 
 
 class TodoUpdate(BaseModel):
-    title: Optional[str] = None
-    description: Optional[str] = None
-    priority: Optional[Priority] = None
-    due_date: Optional[datetime] = None
+    model_config = ConfigDict(extra="forbid")
+
+    title: str | None = Field(None, min_length=1)
+    description: str | None = None
+    priority: Priority | None = None
+    status: Status | None = None
+    due_date: datetime | None = None
