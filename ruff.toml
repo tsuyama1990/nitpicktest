@@ -1,0 +1,2 @@
+force-exclude = true
+exclude = ["src/domain_models", "tests"]
