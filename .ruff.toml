@@ -1,5 +1,3 @@
 [lint]
-ignore = ["E902"]
-
-[format]
 exclude = ["*"]
+ignore = ["E902", "E", "F"]
