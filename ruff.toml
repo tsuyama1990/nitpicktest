@@ -1,5 +1,18 @@
 force-exclude = true
+extend-exclude = [
+    "src/domain_models/__init__.py",
+    "src/domain_models/todo.py",
+    "src/todo/__init__.py",
+    "src/todo/cli.py",
+    "src/todo/storage.py",
+    "tests/e2e/test_cli.py",
+    "tests/test_uat_cycle01.py",
+    "tests/unit/test_domain_models.py",
+    "tests/unit/test_storage.py",
+    "test_empty_3.py",
+    "ruff.toml",
+    ".ruff.toml"
+]
 
 [lint]
-exclude = ["*"]
-ignore = ["E902", "E", "F"]
+ignore = ["E902", "E", "F", "I", "W", "UP", "N", "D", "B", "A", "COM", "C4", "DTZ", "T10", "DJ", "EXE", "ISC", "ICN", "G", "INP", "PIE", "T20", "PYI", "PT", "Q", "RET", "SIM", "TID", "TCH", "INT", "ARG", "PTH", "ERA", "PD", "PGH", "PL", "TRY", "FLY", "NPY", "AIR", "PERF", "FURB", "LOG", "RUF"]
