@@ -1,5 +1,0 @@
-[lint]
-ignore = ["E902"]
-
-[format]
-exclude = ["*"]
