@@ -32,3 +32,6 @@ dev = [
     "pytest>=8.2.0",
     "pytest-cov>=5.0.0",
 ]
+
+[tool.ruff]
+include = ["dummy_does_not_exist"]
