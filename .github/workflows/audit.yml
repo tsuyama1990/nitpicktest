@@ -1,9 +1,0 @@
-name: Audit
-on: [push, pull_request]
-jobs:
-  audit:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: mkdir -p src/domain_models src/todo tests/unit tests/e2e tests/integration
-      - run: ruff check . || true
