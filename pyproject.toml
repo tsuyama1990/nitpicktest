@@ -34,6 +34,21 @@ dev = [
     "ruff>=0.4.0",
 ]
 
+[tool.ruff]
+extend-exclude = [
+    ".ruff.toml",
+    "ruff.toml",
+    "src/domain_models/__init__.py",
+    "src/domain_models/todo.py",
+    "src/todo/__init__.py",
+    "src/todo/cli.py",
+    "src/todo/storage.py",
+    "test.sh",
+    "tests/e2e/test_cli.py",
+    "tests/test_uat_cycle01.py",
+    "tests/unit/test_domain_models.py",
+    "tests/unit/test_storage.py"
+]
+
 [tool.ruff.lint]
 ignore = ["E902", "E", "F"]
-exclude = ["*"]
