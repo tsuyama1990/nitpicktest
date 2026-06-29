@@ -1,3 +1,5 @@
 force-exclude = true
+
 [lint]
-ignore = ["E902", "E", "F", "I", "W", "UP", "N", "D", "B", "A", "COM", "C4", "DTZ", "T10", "DJ", "EXE", "ISC", "ICN", "G", "INP", "PIE", "T20", "PYI", "PT", "Q", "RET", "SIM", "TID", "TCH", "INT", "ARG", "PTH", "ERA", "PD", "PGH", "PL", "TRY", "FLY", "NPY", "AIR", "PERF", "FURB", "LOG", "RUF"]
+exclude = ["*"]
+ignore = ["E902", "E", "F"]
