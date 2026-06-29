@@ -12,13 +12,16 @@ from src.todo.storage import load_todos, save_todos
 app = typer.Typer(help="A simple CLI TODO application")
 console = Console()
 
+
 def get_storage_file() -> str:
     return os.environ.get("TODO_STORAGE_FILE", "todos.json")
+
 
 def _get_next_id(todos: list[TodoItem]) -> int:
     if not todos:
         return 1
     return max(todo.id for todo in todos) + 1
+
 
 @app.command()
 def add(
@@ -54,6 +57,7 @@ def add(
         console.print(f"[red]Error saving storage:[/red] {e}")
         raise typer.Exit(1)
 
+
 @app.command(name="list")
 def list_todos() -> None:
     """List all TODO items."""
@@ -88,6 +92,7 @@ def list_todos() -> None:
 
     console.print(table)
 
+
 @app.command()
 def complete(
     item_id: int = typer.Argument(..., help="The ID of the task to complete"),
@@ -113,6 +118,7 @@ def complete(
     console.print(f"[red]TODO {item_id} not found.[/red]")
     raise typer.Exit(1)
 
+
 @app.command()
 def delete(
     item_id: int = typer.Argument(..., help="The ID of the task to delete"),
@@ -134,6 +140,7 @@ def delete(
 
     console.print(f"[red]TODO {item_id} not found.[/red]")
     raise typer.Exit(1)
+
 
 if __name__ == "__main__":
     app()
