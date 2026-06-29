@@ -34,7 +34,3 @@ dev = [
     "pytest-mock>=3.15.1",
     "ruff>=0.15.20",
 ]
-
-[tool.ruff]
-force-exclude = true
-exclude = ["*"]
