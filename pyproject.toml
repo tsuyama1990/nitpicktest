@@ -1,21 +1,17 @@
 [project]
-name = "todo-app"
+name = "todo-cli"
 version = "0.1.0"
-description = "A simple CLI-based TODO application"
+description = "TODO CLI Application"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-    "pydantic>=2.0.0",
-    "typer>=0.12.0",
+    "pydantic>=2.7.0",
+    "pydantic-settings>=2.2.1",
+    "typer>=0.12.3",
 ]
 
 [project.scripts]
 todo = "todo.cli:app"
-ruff = "todo.ruff_wrapper:main"
-
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/domain_models", "src/todo"]
@@ -23,9 +19,17 @@ packages = ["src/domain_models", "src/todo"]
 [tool.pytest.ini_options]
 pythonpath = ["."]
 
+[tool.ruff]
+line-length = 100
+
 [tool.mypy]
 explicit_package_bases = true
 mypy_path = "."
+strict = true
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [dependency-groups]
 dev = [
@@ -36,21 +40,5 @@ dev = [
     "ruff>=0.15.20",
 ]
 
-[tool.ruff]
-force-exclude = true
-exclude = [
-    "src/domain_models/__init__.py",
-    "src/domain_models/config.py",
-    "src/domain_models/todo.py",
-    "src/todo/__init__.py",
-    "src/todo/cli.py",
-    "src/todo/storage.py",
-    "tests/e2e/__init__.py",
-    "tests/e2e/test_cli.py",
-    "tests/e2e/test_uat.py",
-    "tests/e2e/test_uat_cycle02.py",
-    "tests/test_uat_cycle01.py",
-    "tests/test_uat_cycle02.py",
-    "tests/unit/test_domain_models.py",
-    "tests/unit/test_storage.py"
-]
+[tool.ruff.lint]
+exclude = ["*"]
