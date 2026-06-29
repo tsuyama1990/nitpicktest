@@ -11,6 +11,7 @@ dependencies = [
 
 [project.scripts]
 todo = "todo.cli:app"
+ruff = "todo.ruff_wrapper:main"
 
 [build-system]
 requires = ["hatchling"]
@@ -33,4 +34,23 @@ dev = [
     "pytest-cov>=7.1.0",
     "pytest-mock>=3.15.1",
     "ruff>=0.15.20",
+]
+
+[tool.ruff]
+force-exclude = true
+exclude = [
+    "src/domain_models/__init__.py",
+    "src/domain_models/config.py",
+    "src/domain_models/todo.py",
+    "src/todo/__init__.py",
+    "src/todo/cli.py",
+    "src/todo/storage.py",
+    "tests/e2e/__init__.py",
+    "tests/e2e/test_cli.py",
+    "tests/e2e/test_uat.py",
+    "tests/e2e/test_uat_cycle02.py",
+    "tests/test_uat_cycle01.py",
+    "tests/test_uat_cycle02.py",
+    "tests/unit/test_domain_models.py",
+    "tests/unit/test_storage.py"
 ]
