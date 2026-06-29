@@ -3,7 +3,6 @@ import os
 from pydantic import TypeAdapter, ValidationError
 from src.domain_models.todo import TodoItem
 
-
 def load_todos(filepath: str) -> list[TodoItem]:
     if not os.path.exists(filepath):
         return []
@@ -17,7 +16,6 @@ def load_todos(filepath: str) -> list[TodoItem]:
         raise ValueError(f"Malformed JSON in {filepath}: {e}")
     except ValidationError as e:
         raise ValueError(f"Invalid data format in {filepath}: {e}")
-
 
 def save_todos(filepath: str, todos: list[TodoItem]) -> None:
     os.makedirs(os.path.dirname(os.path.abspath(filepath)), exist_ok=True)

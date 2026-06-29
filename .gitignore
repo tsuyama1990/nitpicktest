@@ -35,6 +35,7 @@ build/
 
 # Application specific
 todos.json
+todos_uat.json
 
 # Critical system state
 .nitpick/
