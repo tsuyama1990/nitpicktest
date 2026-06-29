@@ -10,4 +10,9 @@ tests/test_uat_cycle01.py ....                                           [ 50%]
 tests/unit/test_domain_models.py .....                                   [ 77%]
 tests/unit/test_storage.py ....                                          [100%]
 
-============================== 18 passed in 0.59s ==============================
+============================== 18 passed in 1.07s ==============================
+Using CPython 3.12.13 interpreter at: /home/jules/.pyenv/versions/3.12.13/bin/python3
+Creating virtual environment at: .venv
+   Building todo-app @ file:///app
+      Built todo-app @ file:///app
+Installed 24 packages in 82ms

@@ -1,5 +1,0 @@
-force-exclude = true
-
-[lint]
-exclude = ["*"]
-ignore = ["E902", "E", "F"]
